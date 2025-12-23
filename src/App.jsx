@@ -733,7 +733,7 @@ END:VEVENT
         </div>
         <div className="relative">
           <div className="text-5xl mb-2">🌿</div>
-          <h1 className="text-2xl font-light text-white tracking-widest">DIVINE PROTOCOL</h1>
+          <h1 className="text-2xl font-light text-white tracking-widest">POOK'S PROTOCOL</h1>
           <p className="text-emerald-200 mt-1 text-sm font-medium">{getDayName(now)}</p>
           <p className="text-4xl font-extralight text-white mt-2 tracking-wide">{formatTime(now)}</p>
         </div>
