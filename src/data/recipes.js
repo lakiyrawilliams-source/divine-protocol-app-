@@ -873,6 +873,45 @@ export default function App() {
           <div className="text-xs text-emerald-700 mt-2 font-semibold">Tap to view full directions</div>
         </button>
       )}
+const formatRange = (a, b) => `${formatTime(a)}–${formatTime(b)}`;
+
+function getTimingForItem(item) {
+  // Default: “at time”
+  const base = item.time;
+
+  // Tea: steep 17–27 minutes, and must be DONE by this time
+  if (item.title === "MORNING TEA" || item.title === "EVENING TEA") {
+    const finishBy = base;
+    const startWindowStart = addMinutes(finishBy, -27);
+    const startWindowEnd = addMinutes(finishBy, -17);
+    return {
+      mode: "finish-by",
+      finishBy,
+      startWindow: [startWindowStart, startWindowEnd],
+      labelPrimary: `Finish by ${formatTime(finishBy)}`,
+      labelSecondary: `Start window: ${formatRange(startWindowStart, startWindowEnd)}`
+    };
+  }
+
+  // Capsules: “take 20 min before meal” = start at this exact time, meal follows
+  if (item.title.includes("CAPSULE")) {
+    return {
+      mode: "start-at",
+      startAt: base,
+      labelPrimary: `At ${formatTime(base)}`,
+      labelSecondary: "Take now (20 min before the meal)"
+    };
+  }
+
+  // Default: show “At time”
+  return {
+    mode: "start-at",
+    startAt: base,
+    labelPrimary: `At ${formatTime(base)}`,
+    labelSecondary: ""
+  };
+}
+
 
       {/* Water Windows Info */}
       <div className="bg-cyan-50 rounded-2xl p-4 border border-cyan-200">
