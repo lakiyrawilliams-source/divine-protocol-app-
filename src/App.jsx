@@ -7,6 +7,8 @@ import {
 } from "lucide-react";
 
 import {BUILT_IN_RECIPES, RECIPE_GROUPS} from "../data/recipeData";
+console.log("RECIPE_GROUPS:", RECIPE_GROUPS);
+
 
 
 // ============================================
