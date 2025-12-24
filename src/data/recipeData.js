@@ -1,46 +1,44 @@
 // src/data/recipeData.js
 
-// UI groups (tabs / filters)
-export const RECIPE_GROUPS = [
+// 1) Keep UI groups (fine as-is)
+export const RECIPE_GROUPS = Object.freeze([
   { id: "foods", label: "Foods" },
   { id: "juices", label: "Juices" },
   { id: "infused-waters", label: "Infused Waters" },
   { id: "dressings", label: "Dressings" },
-];
+]);
 
-// Maps legacy recipe categories → UI groups
-export const RECIPE_CATEGORY_MAP = [
-  {
-    groupId: "foods",
-    includes: [
-      "Lunch Salads",
-      "Dinner",
-      "Soup",
-      "Dinner Sauce",
-      "Lunch Dressings",
-      "Smoothie",
-      "Smoothie Bowl",
-      "Milk",
-    ],
-  },
-  {
-    groupId: "juices",
-    includes: ["Juice"],
-  },
-  {
+// 2) Add stable category defs (no guessing)
+export const CATEGORY = Object.freeze({
+  FOOD: "food",
+  JUICE: "juice",
+  INFUSED_WATER: "infused_water",
+  DRESSING: "dressing",
+  UNKNOWN: "unknown",
+});
+
+export const CATEGORY_DEFS = Object.freeze({
+  [CATEGORY.FOOD]: { label: "Food", groupId: "foods", aliases: ["food", "foods"] },
+  [CATEGORY.JUICE]: { label: "Juice", groupId: "juices", aliases: ["juice", "Juice"] },
+  [CATEGORY.INFUSED_WATER]: {
+    label: "Infused Water",
     groupId: "infused-waters",
-    includes: ["Infusion Water"],
+    aliases: ["infused_water", "Infusion Water", "infused water"],
   },
-];
+  [CATEGORY.DRESSING]: { label: "Dressing", groupId: "dressings", aliases: ["dressing", "dressings"] },
+  [CATEGORY.UNKNOWN]: { label: "Other", groupId: "foods", aliases: [] },
+});
 
+const CATEGORY_ALIAS_LOOKUP = (() => {
+  const map = new Map();
+  Object.entries(CATEGORY_DEFS).forEach(([categoryId, def]) => {
+    def.aliases.forEach((a) => map.set(String(a).trim().toLowerCase(), categoryId));
+  });
+  return map;
+})();
 
-// src/recipeData.js
-// Built-in recipes parsed from your Protocol spreadsheet tabs:
-// Juice Recipes, Infusion Water Recipes, Smoothie Recipes, Milk Recipes,
-// Smoothie Bowl Recipes, Lunch Salads Recipes, Lunch Dressings,
-// Dinner Recipes, Dinner Sauce Recipes, Soup Recipes
-
-export const BUILT_IN_RECIPES = [
+// 3) Put YOUR recipes here (unchanged), but rename export to *_RAW
+export const BUILT_IN_RECIPES_RAW = [
   {
     "id": "apple-honeydew-juice-2-serving",
     "name": "Apple Honeydew Juice (2 serving)",
@@ -120,5 +118,116 @@ export const BUILT_IN_RECIPES = [
   {"id":"juice-watermelon-cucumber-mint-juice","title":"Watermelon-Cucumber-Mint Juice (1 serving)","category":"juice","protocolStrict":true,"servings":1,"prep":{"prepTimeMins":null,"cookTimeMins":null,"yield":null},"ingredients":[{"amount":"400ml","item":"Watermelon"},{"amount":"350ml","item":"Cucumber"},{"amount":"250ml","item":"Mint"}],"steps":["1. Juice all ingredients.","2. Pour into glass and enjoy."],"tags":[],"notes":"Source: Juice Recipes (Divine Protocol – Women)."}
 ];
 
+
+
+
+];
+
+// -------------------------
+// Normalization (add below)
+// -------------------------
+function s(v) {
+  return typeof v === "string" ? v : v == null ? "" : String(v);
+}
+
+function normalizeTitle(r) {
+  return s(r.title).trim() || s(r.name).trim() || "Untitled Recipe";
+}
+
+function normalizeCategoryId(rawCategory, id) {
+  const key = s(rawCategory).trim().toLowerCase();
+  if (CATEGORY_ALIAS_LOOKUP.has(key)) return CATEGORY_ALIAS_LOOKUP.get(key);
+
+  // safe fallback based on deliberate id prefixes (not guessing)
+  const sid = s(id).trim().toLowerCase();
+  if (sid.startsWith("juice-")) return CATEGORY.JUICE;
+  if (sid.startsWith("infused_water-")) return CATEGORY.INFUSED_WATER;
+  if (sid.startsWith("food-")) return CATEGORY.FOOD;
+
+  return CATEGORY.UNKNOWN;
+}
+
+function normalizeIngredients(rawIngredients) {
+  if (!Array.isArray(rawIngredients)) return [];
+
+  // already structured objects
+  if (rawIngredients[0] && typeof rawIngredients[0] === "object") {
+    return rawIngredients
+      .map((ing) => ({
+        amount: s(ing.amount).trim() || null,
+        item: s(ing.item).trim() || s(ing.name).trim() || null,
+        raw: ing.raw ? s(ing.raw).trim() : null,
+      }))
+      .filter((x) => x.item || x.raw);
+  }
+
+  // legacy strings: preserve as raw (no parsing/guessing)
+  return rawIngredients
+    .map((line) => {
+      const raw = s(line).trim();
+      return { amount: null, item: raw || null, raw: raw || null };
+    })
+    .filter((x) => x.raw);
+}
+
+function normalizeSteps(rawSteps) {
+  if (!Array.isArray(rawSteps)) return [];
+  return rawSteps.map((x) => s(x).trim()).filter(Boolean);
+}
+
+function normalizePrep(rawPrep) {
+  const p = rawPrep && typeof rawPrep === "object" ? rawPrep : {};
+  const prepTimeMins = Number.isFinite(p.prepTimeMins) ? p.prepTimeMins : null;
+  const cookTimeMins = Number.isFinite(p.cookTimeMins) ? p.cookTimeMins : null;
+  const yieldVal = s(p.yield).trim() || null;
+  return { prepTimeMins, cookTimeMins, yield: yieldVal };
+}
+
+function normalizeTags(rawTags) {
+  if (!Array.isArray(rawTags)) return [];
+  return rawTags.map((t) => s(t).trim()).filter(Boolean);
+}
+
+function normalizeRecipe(r, idx) {
+  const id = s(r.id).trim() || `recipe-${idx}`;
+  const title = normalizeTitle(r);
+
+  const categoryId = normalizeCategoryId(r.category, id);
+  const def = CATEGORY_DEFS[categoryId] || CATEGORY_DEFS[CATEGORY.UNKNOWN];
+
+  return Object.freeze({
+    id,
+    title,
+
+    // UI-safe classification
+    categoryId,
+    categoryLabel: def.label,
+    groupId: def.groupId,
+
+    // canonical fields
+    protocolStrict: Boolean(r.protocolStrict),
+    servings: Number.isFinite(r.servings) ? r.servings : null,
+    prep: normalizePrep(r.prep),
+
+    ingredients: normalizeIngredients(r.ingredients),
+    steps: normalizeSteps(r.steps),
+    tags: normalizeTags(r.tags),
+    notes: s(r.notes).trim() || null,
+
+    // debug / future migration help
+    _rawCategory: s(r.category).trim() || null,
+    _raw: r,
+  });
+}
+
+export const NORMALIZED_RECIPES = Object.freeze(
+  (Array.isArray(BUILT_IN_RECIPES_RAW) ? BUILT_IN_RECIPES_RAW : []).map(normalizeRecipe)
+);
+
+// 4) Keep your app stable: export normalized as BUILT_IN_RECIPES
+export const BUILT_IN_RECIPES = NORMALIZED_RECIPES;
+
+// optional helpers
+export const getRecipeById = (id) => NORMALIZED_RECIPES.find((r) => r.id === id);
 
 
