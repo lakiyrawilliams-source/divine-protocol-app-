@@ -518,13 +518,13 @@ const groupRecipesForUI = (allRecipes) => {
 
   // ✅ correct: group by groupId
   const byGroup = {};
-  allRecipes.forEach((r) => {
+  allRecipes.forEach((r) ; {
     const gid = r.groupId || "foods";
     (byGroup[gid] ||= []).push(r);
   });
 
   // ✅ return UI groups in the shape your UI expects
- return RECIPE_GROUPS.map((g) => ({
+ return RECIPE_GROUPS.map((g) ; ({
   ...g,
   recipes: byGroup[g.id] || [],
 }));
