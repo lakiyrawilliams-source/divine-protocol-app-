@@ -1,13 +1,14 @@
 import RecipesView from "./views/RecipesView";
 import React, { useEffect, useMemo, useRef, useState } from "react";
+// src/App.jsx
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   Sun, Moon, Droplets, Clock, Calendar, ChefHat, ShoppingCart,
   Check, X, Plus, Minus, Home, Utensils, Apple, Salad, Sparkles,
   AlertCircle, Download, Star, Leaf, Heart, Image as ImageIcon, BookOpen, Pencil, Timer
 } from "lucide-react";
 
-import { BUILT_IN_RECIPES } from "./data/recipeData";
-
+import { BUILT_IN_RECIPES, RECIPE_GROUPS } from "./recipeData";
 
 // ============================================
 // PROTOCOL DATA (foods unchanged; keep yours)
@@ -1708,7 +1709,7 @@ export default function App() {
               ))
             ) : (
               <div className="text-sm text-gray-400 bg-white rounded-xl p-4 border border-gray-200">
-      
+                No recipes found for this tab yet (check your src/recipeData.js contents).
               </div>
             )}
           </div>
@@ -2137,5 +2138,3 @@ export default function App() {
     </div>
   );
 }
-
-
