@@ -6,7 +6,7 @@ import {
   AlertCircle, Download, Star, Leaf, Heart, Image as ImageIcon, BookOpen, Pencil, Timer
 } from "lucide-react";
 
-import {BUILT_IN_RECIPES, RECIPE_GROUPS} from "../data/recipeData";
+import {BUILT_IN_RECIPES, RECIPE_GROUPS } from "../data/recipeData";
 console.log("RECIPE_GROUPS:", RECIPE_GROUPS);
 
 
@@ -517,7 +517,7 @@ const groupRecipesForUI = (allRecipes) => {
   });
 
   // ✅ return UI groups in the shape your UI expects
-  return RECIPE_GROUPS.map((g) => ({
+  return RECIPE_GROUPS.map(g) => ({
     ...g,
     recipes: byGroup[g.id] || [],
   }));
