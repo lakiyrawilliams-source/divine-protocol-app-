@@ -108,7 +108,7 @@ function IngredientList({ ingredients }) {
     <div className="bg-white rounded-xl border border-gray-100 p-4">
       <h4 className="font-semibold text-gray-800">Ingredients</h4>
       <div className="mt-2 space-y-2 text-sm text-gray-700">
-        {ingredients.map((ing, i) => (
+{(ingredients ?? []).map((ing, i) => (
           <div key={i} className="flex items-start justify-between gap-3">
             <div className="min-w-0">
               <div className="font-medium text-gray-800 truncate">{ing.name}</div>
@@ -221,7 +221,8 @@ function RecipeModal({
           ) : null}
 
           {/* Ingredients */}
-          <IngredientList ingredients={recipe.ingredients} />
+          <IngredientList ingredients={ingredients ?? []} />
+
 
           {/* Sections */}
           <Section title="Prep" items={recipe.prep} />
