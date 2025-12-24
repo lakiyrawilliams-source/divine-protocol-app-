@@ -1,5 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { BUILT_IN_RECIPES, RECIPE_GROUPS } from "../data/recipeData";
+console.log("RECIPE_GROUPS runtime:", RECIPE_GROUPS);
+
 
  
 import {
