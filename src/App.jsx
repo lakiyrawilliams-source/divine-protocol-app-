@@ -1611,6 +1611,7 @@ END:VEVENT
         {view === "schedule" && renderSchedule()}
         {view === "meals" && renderMealBuilder()}
         {view === "weekly" && renderWeekly()}
+        {view === 'recipes' && <RecipesView />}
         {view === "grocery" && renderGrocery()}
         {view === "journal" && renderJournal()}
       </div>
