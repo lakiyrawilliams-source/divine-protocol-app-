@@ -1,5 +1,6 @@
 // src/data/recipeData.js
 
+// UI groups (tabs / filters)
 export const RECIPE_GROUPS = [
   { id: "foods", label: "Foods" },
   { id: "juices", label: "Juices" },
@@ -7,12 +8,29 @@ export const RECIPE_GROUPS = [
   { id: "dressings", label: "Dressings" },
 ];
 
-
-// Categories you’ll use in UI grouping:
-export const RECIPE_GROUPS = [
-  { key: "Foods", includes: ["Lunch Salads", "Dinner", "Soup", "Dinner Sauce", "Lunch Dressings", "Smoothie", "Smoothie Bowl", "Milk"] },
-  { key: "Juices", includes: ["Juice"] },
-  { key: "Infused Waters", includes: ["Infusion Water"] }
+// Maps legacy recipe categories → UI groups
+export const RECIPE_CATEGORY_MAP = [
+  {
+    groupId: "foods",
+    includes: [
+      "Lunch Salads",
+      "Dinner",
+      "Soup",
+      "Dinner Sauce",
+      "Lunch Dressings",
+      "Smoothie",
+      "Smoothie Bowl",
+      "Milk",
+    ],
+  },
+  {
+    groupId: "juices",
+    includes: ["Juice"],
+  },
+  {
+    groupId: "infused-waters",
+    includes: ["Infusion Water"],
+  },
 ];
 
 
