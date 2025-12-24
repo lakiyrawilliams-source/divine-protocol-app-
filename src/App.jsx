@@ -529,7 +529,7 @@ const groupRecipesForUI = (allRecipes) => {
   });
 
   // ✅ return UI groups in the shape your UI expects
- return RECIPE_GROUPS.map((g) ; ({
+ return RECIPE_GROUPS..map((g) => ({
   ...g,
   recipes: byGroup[g.id] || [],
 }));
