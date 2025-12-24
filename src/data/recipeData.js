@@ -1,3 +1,13 @@
+// src/data/recipeData.js
+
+export const RECIPE_GROUPS = [
+  { id: "foods", label: "Foods" },
+  { id: "juices", label: "Juices" },
+  { id: "infused-waters", label: "Infused Waters" },
+  { id: "dressings", label: "Dressings" },
+];
+
+
 // Categories you’ll use in UI grouping:
 export const RECIPE_GROUPS = [
   { key: "Foods", includes: ["Lunch Salads", "Dinner", "Soup", "Dinner Sauce", "Lunch Dressings", "Smoothie", "Smoothie Bowl", "Milk"] },
