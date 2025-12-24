@@ -118,11 +118,6 @@ export const BUILT_IN_RECIPES_RAW = [
   {"id":"juice-watermelon-cucumber-mint-juice","title":"Watermelon-Cucumber-Mint Juice (1 serving)","category":"juice","protocolStrict":true,"servings":1,"prep":{"prepTimeMins":null,"cookTimeMins":null,"yield":null},"ingredients":[{"amount":"400ml","item":"Watermelon"},{"amount":"350ml","item":"Cucumber"},{"amount":"250ml","item":"Mint"}],"steps":["1. Juice all ingredients.","2. Pour into glass and enjoy."],"tags":[],"notes":"Source: Juice Recipes (Divine Protocol – Women)."}
 ];
 
-
-
-
-];
-
 // -------------------------
 // Normalization (add below)
 // -------------------------
