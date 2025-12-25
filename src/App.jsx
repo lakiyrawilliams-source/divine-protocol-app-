@@ -1660,8 +1660,7 @@ export default function App() {
                       className="w-full text-left p-4 rounded-xl border border-gray-200 hover:border-emerald-300 bg-white"
                     >
                       <div className="text-xs uppercase tracking-wider text-gray-500 font-bold">
-                      {r.categoryLabel || r.category || "Custom"}
-                      </div>
+                        {r.categoryLabel || r.category || "Custom"}
                       </div>
                       <div className="font-bold text-gray-800">{r.name}</div>
                       <div className="text-sm text-gray-500 mt-1 line-clamp-1">
@@ -1685,12 +1684,10 @@ export default function App() {
                 <button
                   key={r.id}
                   onClick={() => setSelectedRecipeId(r.id)}
-                  className="w-full text-left p-4 bg-white rounded-xl border border-gray-200 hover:border-emerald-300 transition"
+                  className="w-full text-left p-4 rounded-xl border border-gray-200 hover:border-emerald-300 bg-white"
                 >
                   <div className="text-xs uppercase tracking-wider text-gray-500 font-bold">
-                    {r.categoryLabel || r.category || "Recipe"}
-                  </div>
-
+                    {r.categoryLabel || r.category || r.categoryId || "Recipe"}
                   </div>
                   <div className="font-bold text-gray-800">{r.name}</div>
                   <div className="text-sm text-gray-500 mt-1 line-clamp-1">
