@@ -1,4 +1,3 @@
-// src/data/recipeData.js
 
 // 1) Keep UI groups (fine as-is)
 export const RECIPE_GROUPS = Object.freeze([
@@ -224,5 +223,13 @@ export const BUILT_IN_RECIPES = NORMALIZED_RECIPES;
 
 // optional helpers
 export const getRecipeById = (id) => NORMALIZED_RECIPES.find((r) => r.id === id);
+
+// 5) STRICT-ONLY export (app should use this)
+export const STRICT_RECIPES = Object.freeze(
+  NORMALIZED_RECIPES.filter((r) => r.protocolStrict === true)
+);
+
+// If you want to enforce strict globally, export this as the default dataset:
+export const BUILT_IN_RECIPES = STRICT_RECIPES;
 
 
