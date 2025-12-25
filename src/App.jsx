@@ -1662,7 +1662,9 @@ export default function App() {
                       className="w-full text-left p-4 rounded-xl border border-gray-200 hover:border-emerald-300 bg-white"
                     >
                       <div className="text-xs uppercase tracking-wider text-gray-500 font-bold">
-                        {r.categoryLabel || r.category || "Custom"}
+                      {r.categoryLabel || r.category || "Custom"}
+                      </div>
+
 }
                       </div>
                       <div className="font-bold text-gray-800">{r.name}</div>
@@ -1690,7 +1692,9 @@ export default function App() {
                   className="w-full text-left p-4 bg-white rounded-xl border border-gray-200 hover:border-emerald-300 transition"
                 >
                   <div className="text-xs uppercase tracking-wider text-gray-500 font-bold">
-                    {r.categoryLabel || r.category || "Recipe"}
+                    {r.categoryLabel || r.category || "Custom"}
+                  </div>
+
 }
                   </div>
                   <div className="font-bold text-gray-800">{r.name}</div>
