@@ -1797,7 +1797,7 @@ export default function App() {
         title={`${weeklyRecipeOpen.day} — ${weeklyRecipeOpen.meal.toUpperCase()}`}
         onClose={() => setWeeklyRecipeOpen(null)}
       >
-        <div className="text-xs uppercase tracking-wider text-gray-500 font-bold">{r.categoryLabel || r.category || "Custom"}</div>
+        <div className="text-xs uppercase tracking-wider text-gray-500 font-bold">{r.categoryLabel || r.category || "Recipe"}</div>
         <div className="text-lg font-bold text-gray-800 mt-1">{r.name}</div>
 
         {(r.servings || r.prepTime || r.cookTime) ? (
