@@ -10,8 +10,6 @@ import {
 
 console.log("RECIPE_GROUPS:", RECIPE_GROUPS);
 
-
-
 // ============================================
 // PROTOCOL DATA (foods unchanged; keep yours)
 // ============================================
